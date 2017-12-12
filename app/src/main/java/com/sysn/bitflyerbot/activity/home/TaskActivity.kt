@@ -4,10 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import com.sysn.bitflyerbot.TaskBuy
-import com.sysn.bitflyerbot.TaskSell
-import com.sysn.bitflyerbot.common.A
-import com.sysn.bitflyerbot.common.F
+import com.sysn.bitflyerbot.Task
+import com.sysn.bitflyerbot.common.A.log
+import com.sysn.bitflyerbot.common.F.Companion.getNowDate
+import com.sysn.bitflyerbot.common.F.Companion.outPutLog
 import kotlinx.android.synthetic.main.activity_task.view.*
 
 
@@ -15,40 +15,59 @@ import kotlinx.android.synthetic.main.activity_task.view.*
  * Created by shiny on 2017/12/11.
  */
 class TaskActivity(val ac: Activity, val vw: View) {
-    var taskBuyInx = 0
 
     init {
         vw.btn_task_buyset.setOnClickListener {
-            val intent = Intent(ac, TaskBuy::class.java)
-            intent
+            intentBuy = Intent(ac, Task.Buy::class.java)
+            intentBuy!!
                     .putExtra("price_when", vw.edit_task_buywhen.text.toString().toInt())
                     .putExtra("price_per", vw.edit_task_buynum.text.toString().toInt())
                     .putExtra("is_opt", vw.check_task_buyopt.isChecked)
-                    .putExtra("inx", taskBuyInx.toString())
-            intent.action = (taskBuyInx).toString()
-            ac.startService(intent)
+            ac.startService(intentBuy)
             isTaskBuy = true
             vw.btn_task_buyset.text = "実行中"
 
             Log.d("task_activity", "start buy task")
-            A.log += F.getNowDate() + ":start buy task\n"
-            F.outPutLog("task_sell.txt", F.getNowDate() + ":start buy task", ac)
-
-            taskBuyInx++
+            log += getNowDate() + ":start buy task\n"
+            outPutLog("task_sell.txt", getNowDate() + ":start buy task", ac)
         }
+
         vw.btn_task_sellset.setOnClickListener {
-            val intent = Intent(ac, TaskSell::class.java)
-            intent
+            intentSell = Intent(ac, Task.Sell::class.java)
+            intentSell!!
                     .putExtra("price_when", vw.edit_task_sellwhen.text.toString().toInt())
                     .putExtra("price_per", vw.edit_task_sellnum.text.toString().toInt())
                     .putExtra("is_opt", vw.check_task_sellopt.isChecked)
-            ac.startService(intent)
+            ac.startService(intentSell)
             isTaskSell = true
             vw.btn_task_sellset.text = "実行中"
 
             Log.d("task_activity", "start sell task")
-            A.log += F.getNowDate() + ":start sell task\n"
-            F.outPutLog("task_sell.txt", F.getNowDate() + ":start sell task", ac)
+            log += getNowDate() + ":start sell task\n"
+            outPutLog("task_sell.txt", getNowDate() + ":start sell task", ac)
+        }
+
+        vw.btn_task_buyset2.setOnClickListener {
+            intentBuySub = Intent(ac, Task.BuySub::class.java)
+            intentBuySub!!
+                    .putExtra("price_when", vw.edit_task_buywhen2.text.toString().toInt())
+                    .putExtra("price_per", vw.edit_task_buynum2.text.toString().toInt())
+                    .putExtra("is_opt", vw.check_task_buyopt2.isChecked)
+
+            ac.startService(intentBuySub)
+            isTaskBuy = true
+            vw.btn_task_buyset2.text = "実行中"
+        }
+
+        vw.btn_task_sellset2.setOnClickListener {
+            intentSellSub = Intent(ac, Task.SellSub::class.java)
+            intentSellSub!!
+                    .putExtra("price_when", vw.edit_task_sellwhen2.text.toString().toInt())
+                    .putExtra("price_per", vw.edit_task_sellnum2.text.toString().toInt())
+                    .putExtra("is_opt", vw.check_task_sellopt2.isChecked)
+            ac.startService(intentSellSub)
+            isTaskSell = true
+            vw.btn_task_sellset2.text = "実行中"
         }
     }
 
@@ -59,5 +78,12 @@ class TaskActivity(val ac: Activity, val vw: View) {
     companion object {
         var isTaskBuy = false
         var isTaskSell = false
+        var isTaskBuySub = false
+        var isTaskSellSub = false
+
+        var intentBuy: Intent? = null
+        var intentBuySub: Intent? = null
+        var intentSell: Intent? = null
+        var intentSellSub: Intent? = null
     }
 }

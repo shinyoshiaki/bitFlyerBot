@@ -21,8 +21,10 @@
         <activity android:name=".activity.HomeActivity" />
         <activity android:name=".activity.ResetApiActivity" />
 
-        <service android:name=".TaskBuy" />
-        <service android:name=".TaskSell" />
+        <service android:name=".Task$Buy" />
+        <service android:name=".Task$BuySub" />
+        <service android:name=".Task$Sell" />
+        <service android:name=".Task$SellSub" />
     </application>
 
 </manifest>
