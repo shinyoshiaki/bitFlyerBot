@@ -49,9 +49,6 @@ class InfoActivity(val ac: Activity, val vw: View) {
     }
 
     fun refresh() {
-        GetInfo().getMyInfo()
-        GetInfo().getBtcInfo()
-
         vw.text_info_log.text = A.log
     }
 

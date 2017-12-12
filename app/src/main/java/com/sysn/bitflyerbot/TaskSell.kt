@@ -9,6 +9,7 @@ import com.sysn.bitflyerbot.activity.home.TaskActivity
 import com.sysn.bitflyerbot.api.GetInfo
 import com.sysn.bitflyerbot.api.Order
 import com.sysn.bitflyerbot.common.A
+import com.sysn.bitflyerbot.common.F
 
 
 /**
@@ -30,10 +31,9 @@ class TaskSell : Service() {
             val handler = Handler()
             Handler().post(object : Runnable {
                 override fun run() {
-                    GetInfo().getBtcInfo()
-                    GetInfo().getMyInfo()
-
-                    Log.d("task_sell_get_info", GetInfo.priceNowBtcAsJpy.toString() + "," + GetInfo.priceMyJpy + "," + GetInfo.priceMyBtc)
+                    val msg = F.getNowDate() + "_now_btc:" + GetInfo.priceNowBtcAsJpy.toString() + ",when:" + priceWhen + ",per:" + pricePer
+                    Log.d("task_sell_live", msg)
+                    F.outPutLog("task_sell_live.txt", msg, A.mainActivity)
 
                     sell()
 
@@ -49,7 +49,7 @@ class TaskSell : Service() {
 
     private var high: Int = -1
     private fun sell() {
-        Log.d("task","sell")
+        Log.d("task", "sell")
 
         fun togari(now: Int): Boolean {
             if (high == -1) high = now
@@ -64,9 +64,10 @@ class TaskSell : Service() {
 
         GetInfo.priceNowBtcAsJpy?.let {
             fun job() {
-                val btc: Double = GetInfo.priceMyBtc!! * (pricePer / 100)
+                val btc: Double = GetInfo.priceMyBtc!!.toDouble() * (pricePer.toDouble() / 100.toDouble())
                 Log.d("task", "sell: $btc")
-                A.log+=java.lang.Long.toString(System.currentTimeMillis() / 1000)+"sell: $btc\n"
+                A.log += F.getNowDate() + "_sell: $btc\n"
+                F.outPutLog("task_sell.txt", F.getNowDate() + ":sell $btc", A.mainActivity)
 
                 if (!A.isTest)
                     Order(A.apiKey, A.apiSecret, null, false, it, btc).execute()

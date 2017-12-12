@@ -3,6 +3,7 @@ package com.sysn.bitflyerbot.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
@@ -13,6 +14,7 @@ import com.sysn.bitflyerbot.activity.home.InfoActivity
 import com.sysn.bitflyerbot.activity.home.StateActivity
 import com.sysn.bitflyerbot.activity.home.TaskActivity
 import com.sysn.bitflyerbot.activity.home.TradeActivity
+import com.sysn.bitflyerbot.api.GetInfo
 import kotlinx.android.synthetic.main.common_activity_tablayout.*
 
 /**
@@ -49,6 +51,17 @@ class HomeActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         pager.adapter = adapter
         pager.addOnPageChangeListener(this)
         tabs.setupWithViewPager(pager)
+
+        val handler = Handler()
+        Handler().post(object : Runnable {
+            override fun run() {
+
+                GetInfo().getBtcInfo()
+                GetInfo().getMyInfo()
+
+                handler.postDelayed(this, 1000)
+            }
+        })
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}

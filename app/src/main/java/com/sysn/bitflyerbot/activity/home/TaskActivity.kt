@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.activity_task.view.*
  * Created by shiny on 2017/12/11.
  */
 class TaskActivity(val ac: Activity, val vw: View) {
+    var taskBuyInx = 0
+
     init {
         vw.btn_task_buyset.setOnClickListener {
             val intent = Intent(ac, TaskBuy::class.java)
@@ -22,6 +24,8 @@ class TaskActivity(val ac: Activity, val vw: View) {
                     .putExtra("price_when", vw.edit_task_buywhen.text.toString().toInt())
                     .putExtra("price_per", vw.edit_task_buynum.text.toString().toInt())
                     .putExtra("is_opt", vw.check_task_buyopt.isChecked)
+                    .putExtra("inx", taskBuyInx.toString())
+            intent.action = (taskBuyInx).toString()
             ac.startService(intent)
             isTaskBuy = true
             vw.btn_task_buyset.text = "実行中"
@@ -29,6 +33,8 @@ class TaskActivity(val ac: Activity, val vw: View) {
             Log.d("task_activity", "start buy task")
             A.log += F.getNowDate() + ":start buy task\n"
             F.outPutLog("task_sell.txt", F.getNowDate() + ":start buy task", ac)
+
+            taskBuyInx++
         }
         vw.btn_task_sellset.setOnClickListener {
             val intent = Intent(ac, TaskSell::class.java)
