@@ -3,6 +3,7 @@ package com.sysn.bitflyerbot.api
 import android.os.AsyncTask
 import com.sysn.bitflyerbot.common.A
 import com.sysn.bitflyerbot.common.Encrypt
+import com.sysn.bitflyerbot.common.F
 import kotlinx.android.synthetic.main.activity_info.view.*
 import org.json.JSONArray
 import org.json.JSONException
@@ -91,7 +92,6 @@ class GetInfo {
             for (info in infos) {
                 when (info.currencyCode) {
                     "JPY" -> {
-                        //vw.text_info_myjpy.text = java.lang.Double.toString(info.available) + " YEN"
                         priceMyJpy = info.available
                     }
                     "BTC" -> {

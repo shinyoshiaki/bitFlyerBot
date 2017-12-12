@@ -7,6 +7,7 @@ import android.view.View
 import com.sysn.bitflyerbot.api.GetInfo
 import com.sysn.bitflyerbot.common.A
 import com.sysn.bitflyerbot.common.Encrypt
+import com.sysn.bitflyerbot.common.F
 import kotlinx.android.synthetic.main.activity_info.view.*
 import org.json.JSONArray
 import org.json.JSONException
@@ -31,12 +32,15 @@ class InfoActivity(val ac: Activity, val vw: View) {
 
                 GetInfo.priceNowBtcAsJpy.let {
                     vw.text_info_nowbtc.text = it.toString()
+                    F.outPutLog("nowbtc.txt", it.toString(), ac)
                 }
                 GetInfo.priceMyJpy.let {
                     vw.text_info_myjpy.text = it.toString()
+                    F.outPutLog("myjpy.txt", it.toString(), ac)
                 }
                 GetInfo.priceMyBtc.let {
                     vw.text_info_mybtc.text = it.toString()
+                    F.outPutLog("mybtc.txt", it.toString(), ac)
                 }
 
                 handler.postDelayed(this, 1000)
